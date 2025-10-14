@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta property="og:title" content="PromptAI - Testing your GenAI-Q">
     <meta property="og:description" content="Guess the word in four tries, Green=Right Alphabet, Right Place, Orange=Right Alphabet, Wrong Place, Grey=Wrong">
     <meta property="og:image" content="https://via.placeholder.com/1200x630/6366f1/ffffff?text=PromptAI">
@@ -22,6 +22,9 @@
             justify-content: center;
             align-items: center;
             padding: 10px;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         
         .container {
@@ -130,6 +133,8 @@
             text-transform: uppercase;
             min-width: 30px;
             transition: all 0.1s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .key:hover {
@@ -539,6 +544,7 @@
         let currentTile = 0;
         let gameOver = false;
         let stats = {played: 0, won: 0, streak: 0};
+        let maxAttempts = 0;
         
         const board = document.getElementById('board');
         const keyboard = document.getElementById('keyboard');
@@ -547,9 +553,9 @@
         function init() {
             loadStats();
             word = WORDS[Math.floor(Math.random() * WORDS.length)];
-            const maxLength = Math.max(...WORDS.map(w => w.length));
+            maxAttempts = word.length + 1; // Dynamic attempts based on word length
             
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < maxAttempts; i++) {
                 const row = document.createElement('div');
                 row.className = 'row';
                 for (let j = 0; j < word.length; j++) {
@@ -636,7 +642,7 @@
                     showMessage(`Brilliant! You got it in ${currentRow + 1} tries!`, 'success');
                     showStats();
                 }, 1500);
-            } else if (currentRow === 3) {
+            } else if (currentRow === maxAttempts - 1) {
                 gameOver = true;
                 stats.played++;
                 stats.streak = 0;
