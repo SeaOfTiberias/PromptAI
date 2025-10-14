@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta property="og:title" content="PromptAI - Testing your GenAI-Q">
-    <meta property="og:description" content="Guess the word: No of Tries - Length of Word, Green=Right Alphabet, Right Place, Orange=Right Alphabet, Wrong Place, Grey=Wrong">
+    <meta property="og:description" content="Guess the word: No of Tries = Length of Word capped at 6, Green=Right Alphabet, Right Place, Orange=Right Alphabet, Wrong Place, Grey=Wrong">
     <meta property="og:image" content="https://via.placeholder.com/1200x630/6366f1/ffffff?text=PromptAI">
     <title>PromptAI - AI Word Game</title>
     <style>
@@ -553,7 +553,8 @@
         function init() {
             loadStats();
             word = WORDS[Math.floor(Math.random() * WORDS.length)];
-            maxAttempts = word.length + 1; // Dynamic attempts based on word length
+            // Dynamic attempts: word length + 1, but capped at 6 maximum
+            maxAttempts = Math.min(word.length + 1, 6);
             
             for (let i = 0; i < maxAttempts; i++) {
                 const row = document.createElement('div');
